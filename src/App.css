@@ -1,0 +1,79 @@
+@import url('https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: 'Amiri', serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  direction: rtl;
+}
+
+.surah-list {
+  padding: 1rem;
+}
+
+.surah-item {
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  border-bottom: 1px solid #eee;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.surah-item:hover {
+  background-color: rgba(31, 111, 120, 0.1);
+}
+
+.surah-number {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  background-color: #1F6F78;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 1rem;
+}
+
+.ayah-container {
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+  background-color: #f8f8f8;
+  border: 1px solid #1F6F78;
+}
+
+.bismillah {
+  text-align: center;
+  font-size: 1.5rem;
+  margin: 1rem 0;
+  color: #1F6F78;
+}
+
+.ayah-text {
+  font-size: 1.2rem;
+  line-height: 2;
+  text-align: right;
+  margin-bottom: 1rem;
+}
+
+.ayah-number {
+  color: #1F6F78;
+  font-size: 0.9rem;
+  margin-right: 0.5rem;
+}
+
+.tafseer {
+  font-size: 0.9rem;
+  color: #666;
+  padding-top: 1rem;
+  border-top: 1px solid #eee;
+}

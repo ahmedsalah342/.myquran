@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>القرآن الكريم</title>
+    <link rel="stylesheet" href="styles/main.css">
+</head>
+<body>
+    <button class="theme-toggle" onclick="toggleTheme()">🌙</button>
+    <div class="container">
+        <!-- القائمة الجانبية -->
+        <div class="sidebar">
+            <div class="search-container">
+                <input type="text" 
+                       class="search-input" 
+                       placeholder="ابحث عن سورة..."
+                       oninput="searchSurahs(this.value)">
+            </div>
+            <ul class="surah-list" id="surahList"></ul>
+        </div>
+
+        <!-- المحتوى الرئيسي -->
+        <div class="main-content">
+            <div class="header">
+                <h1>القرآن الكريم</h1>
+            </div>
+            <div id="ayatContainer"></div>
+        </div>
+    </div>
+
+    <script src="data/quran-data.js"></script>
+    <script>
+        // عرض قائمة السور
+        function displaySurahs(surahsToShow = quranData.surahs) {
+            const surahList = document.getElementById('surahList');
+            surahList.innerHTML = '';
+            
+            surahsToShow.forEach(surah => {
+                const surahElement = document.createElement('div');
+                surahElement.className = 'surah-item';
+                surahElement.onclick = () => displaySurah(surah);
+                
+                const surahName = document.createElement('div');
+                surahName.className = 'surah-name';
+                surahName.textContent = `${surah.number}. ${surah.name}`;
+                
+                surahElement.appendChild(surahName);
+                surahList.appendChild(surahElement);
+            });
+        }
+
+        // عرض السورة المحددة مع آياتها وتفسيرها
+        function displaySurah(surah) {
+            const mainContent = document.querySelector('.main-content');
+            mainContent.innerHTML = '';
+
+            // إضافة البسملة لجميع السور ما عدا التوبة
+            if (surah.number !== 9) {
+                const bismillah = document.createElement('div');
+                bismillah.className = 'bismillah';
+                bismillah.textContent = 'بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ';
+                mainContent.appendChild(bismillah);
+            }
+
+            // إضافة عنوان السورة
+            const titleContainer = document.createElement('div');
+            titleContainer.className = 'surah-title-container';
+            
+            const title = document.createElement('h2');
+            title.className = 'surah-title';
+            title.textContent = `سورة ${surah.name}`;
+            
+            titleContainer.appendChild(title);
+            mainContent.appendChild(titleContainer);
+
+            // عرض الآيات مع تفسيرها
+            if (surah.ayahsData) {
+                surah.ayahsData.forEach(ayah => {
+                    const ayahDiv = document.createElement('div');
+                    ayahDiv.className = 'ayah-container';
+                    ayahDiv.innerHTML = `
+                        <div class="ayah-text">
+                            <span class="ayah-number">${ayah.number}</span>
+                            ${ayah.text}
+                        </div>
+                        <div class="tafseer">
+                            ${ayah.tafseer}
+                        </div>
+                    `;
+                    mainContent.appendChild(ayahDiv);
+                });
+            }
+
+            // تمرير إلى أعلى الصفحة
+            mainContent.scrollTop = 0;
+            
+            // تحديث العنصر النشط في القائمة
+            document.querySelectorAll('.surah-item').forEach(item => {
+                item.classList.remove('active');
+                if (item.querySelector('.surah-name').textContent === `${surah.number}. ${surah.name}`) {
+                    item.classList.add('active');
+                }
+            });
+        }
+
+        // البحث في السور
+        function searchSurahs(query) {
+            const filteredSurahs = quranData.surahs.filter(surah => 
+                surah.name.includes(query) || 
+                surah.nameEn.toLowerCase().includes(query.toLowerCase()) ||
+                surah.number.toString().includes(query)
+            );
+            displaySurahs(filteredSurahs);
+        }
+
+        // تبديل الوضع الليلي/النهاري
+        function toggleTheme() {
+            document.body.classList.toggle('dark-mode');
+            const themeButton = document.querySelector('.theme-toggle');
+            if (document.body.classList.contains('dark-mode')) {
+                themeButton.textContent = '☀️';
+            } else {
+                themeButton.textContent = '🌙';
+            }
+            localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
+        }
+
+        // استعادة تفضيل الوضع الليلي/النهاري
+        if (localStorage.getItem('darkMode') === 'true') {
+            document.body.classList.add('dark-mode');
+            document.querySelector('.theme-toggle').textContent = '☀️';
+        }
+
+        // تشغيل التطبيق
+        displaySurahs();
+        displaySurah(quranData.surahs[0]);
+    </script>
+</body>
+</html>
