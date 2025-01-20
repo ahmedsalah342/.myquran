@@ -8,6 +8,7 @@
 </head>
 <body>
     <button class="theme-toggle" onclick="toggleTheme()">🌙</button>
+    <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
     <div class="container">
         <!-- القائمة الجانبية -->
         <div class="sidebar">
@@ -17,7 +18,7 @@
                        placeholder="ابحث عن سورة..."
                        oninput="searchSurahs(this.value)">
             </div>
-            <ul class="surah-list" id="surahList"></ul>
+            <div id="surahList"></div>
         </div>
 
         <!-- المحتوى الرئيسي -->
@@ -130,6 +131,12 @@
         if (localStorage.getItem('darkMode') === 'true') {
             document.body.classList.add('dark-mode');
             document.querySelector('.theme-toggle').textContent = '☀️';
+        }
+
+        // دالة للتحكم في القائمة الجانبية
+        function toggleSidebar() {
+            document.querySelector('.sidebar').classList.toggle('active');
+            document.querySelector('.menu-toggle').classList.toggle('active');
         }
 
         // تشغيل التطبيق
